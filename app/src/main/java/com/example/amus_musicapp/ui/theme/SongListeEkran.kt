@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.amus_musicapp.R
 import com.example.amus_musicapp.data.Songs
+import com.example.amus_musicapp.data.getSongs
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -43,7 +44,7 @@ fun SongListeEkran(
     val permissionState= rememberPermissionState(permission)
     LaunchedEffect(key1 = permissionState.status){
         if(permissionState.status.isGranted){
-
+            songsState.value=getSongs(context)
         }
     }
 
@@ -57,10 +58,10 @@ fun SongListeEkran(
             Text(
                 text = "Sanatçılar",
                 fontSize = 20.sp,
-                color = colorResource(id = R.color.darkblue),
+                color = colorResource(id = R.color.lightblue_grey),
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier
-                    .padding(top=44.dp, bottom = 20.dp )
+                    .padding(top=80.dp, bottom = 20.dp )
                     .align (Alignment.CenterHorizontally)
 
             )
@@ -73,6 +74,13 @@ fun SongListeEkran(
                 }
 
             }
+            
+            SongList(
+                songs = songsState.value,
+                onSongClick={pos->onSongClick(songsState.value,pos)},
+                modifier = Modifier.weight(1f)
+
+            )
         }
 
 

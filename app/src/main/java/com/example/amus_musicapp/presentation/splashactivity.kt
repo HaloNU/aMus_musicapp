@@ -16,7 +16,7 @@ class splashactivity : AppCompatActivity() {
         setContent {
             SplashScreen(
                 onStartClick = {
-                    startActivity(Intent(this@splashactivity, MainActivity::class.java))
+                    startActivity(Intent(this@splashactivity, SongListActivity::class.java))
                     finish()
                 }
             )

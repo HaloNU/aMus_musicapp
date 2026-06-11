@@ -26,6 +26,23 @@ fun getSongs(context: Context): List<Songs>{
         sortOrder
     )
 
-    )
+    cursor?.use {
+        val idSutun=it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+        val titleSutun=it.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+        val artistSutun=it.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+        val dataSutun=it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+        val albumidSutun=it.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
+
+        while(it.moveToNext()){
+            val id=it.getLong(idSutun)
+            val title=it.getString(titleSutun)
+            val artist=it.getString(artistSutun)
+            val data=it.getString(dataSutun)
+            val albumId=it.getLong(albumidSutun)
+            songs.add(Songs(id,title,artist,data,albumId))
+        }
+    }
+    return songs
+
 
 }

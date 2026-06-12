@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -213,6 +214,45 @@ fun MuzikCalarEkran(
                 )
 
             }
+            Column (modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
+                .padding(horizontal = 24.dp)
+                .padding(top = 380.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+
+            ){
+                WaveformBar(
+                    values = waveform,
+                    progress = waveformProgress,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(60.dp)
+                ){
+                    percent->
+                    val seek=(percent*duration).toLong()
+                    exoPlayer.seekTo(seek)
+                    elapsed=seek
+                    waveformProgress=percent
+                }
+                Row (
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 6.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+
+                ){
+                    Text(formatTime((elapsed/1000).toInt()),
+                        color = Color.White,
+                        fontSize = 13.sp
+                    )
+                    Text(formatTime((duration/1000).toInt()),
+                        color = Color.White,
+                        fontSize = 13.sp
+                    )
+                }
+
+            }
 
             Row (Modifier
                 .fillMaxWidth()
@@ -253,7 +293,7 @@ fun MuzikCalarEkran(
 
                 },
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(54.dp)
                         .background(Color.White, shape = CircleShape)
 
                 ) {
@@ -297,3 +337,5 @@ fun getWaveform(): IntArray{
     val random= Random(System.currentTimeMillis())
     return IntArray(50){5+random.nextInt(50)}
 }
+
+fun formatTime(seconds:Int): String= String.format("%02d:%02d", seconds/60 ,seconds%60 )

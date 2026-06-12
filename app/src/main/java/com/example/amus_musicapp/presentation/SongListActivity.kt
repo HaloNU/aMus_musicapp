@@ -1,6 +1,7 @@
 package com.example.amus_musicapp.presentation
 
 import android.Manifest
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -26,6 +27,10 @@ class SongListActivity : ComponentActivity() {
         setContent {
 
             SongListeEkran { songs, position ->
+                val intent = Intent(this, MuzikCalarActivity::class.java)
+                intent.putParcelableArrayListExtra("songList", ArrayList(songs))
+                intent.putExtra("position", position)
+                startActivity(intent)
 
             }
 
@@ -33,31 +38,7 @@ class SongListActivity : ComponentActivity() {
 
 
 
-            AMus_musicappTheme {
-                val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    Manifest.permission.READ_MEDIA_AUDIO
-                } else {
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                }
 
-                val permissionState = rememberPermissionState(permission)
-
-                LaunchedEffect(Unit) {
-                    permissionState.launchPermissionRequest()
-                }
-
-                if (permissionState.status.isGranted) {
-                    SongListeEkran { songs, position ->}
-                } else {
-
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "Uygulamanın çalışması için müzik erişim izni vermelisiniz.")
-                    }
-                }
-            }
         }
     }
 }
